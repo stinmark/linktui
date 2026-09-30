@@ -68,11 +68,11 @@ makepkg -si
 
 ### GitHub Releases (pre-built binary)
 
-Download the latest binary from the [Releases page](https://github.com/yourusername/linktui/releases).
+Download the latest binary from the [Releases page](https://github.com/stinmark/linktui/releases).
 
 ```sh
 # Download and install
-curl -Lo linktui https://github.com/austinemk/linktui/releases/latest/download/linktui-linux-amd64
+curl -Lo linktui https://github.com/stinmark/linktui/releases/latest/download/linktui-linux-amd64
 chmod +x linktui
 sudo mv linktui /usr/local/bin/
 ```
@@ -84,7 +84,7 @@ sudo mv linktui /usr/local/bin/
 Requires Go 1.26+.
 
 ```sh
-git clone https://github.com/austinemk/linktui.git
+git clone https://github.com/stinmark/linktui.git
 cd linktui
 go build -o linktui ./cmd/linktui
 sudo mv linktui /usr/local/bin/
