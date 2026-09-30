@@ -8,9 +8,17 @@ import (
 
 // RenderHeader draws the main app banner and menu selections
 func RenderHeader(activeTab int) string {
-	figure := `░█░░░▀█▀░█▀█░█░█░▀█▀░█░█░▀█▀
+	var figure string
+	if WindowWidth > 65 {
+	figure = `░█░░░▀█▀░█▀█░█░█░▀█▀░█░█░▀█▀
 ░█░░░░█░░█░█░█▀▄░░█░░█░█░░█░
 ░▀▀▀░▀▀▀░▀░▀░▀░▀░░▀░░▀▀▀░▀▀▀`
+} else if WindowWidth > 50 {
+	figure = ` ⡇  ⡇ ⡷⣸ ⣇⠜ ⢹⠁ ⡇⢸ ⡇
+ ⠧⠤ ⠇ ⠇⠹ ⠇⠱ ⠸  ⠣⠜ ⠇`
+} else {
+	figure = ""
+}
 
 	title := Styles.Title.Render(figure)
 

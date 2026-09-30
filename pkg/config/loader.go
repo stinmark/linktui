@@ -28,6 +28,11 @@ type AppConfig struct {
 	} `toml:"colors"`
 }
 
+var (
+	HasCustomWidth  bool
+	HasCustomHeight bool
+)
+
 // LoadConfig opens the TOML file, maps configurations, and initializes styles
 func LoadConfig(filePath string) error {
 	cfg := AppConfig{}
@@ -47,30 +52,24 @@ func LoadConfig(filePath string) error {
 	cfg.Colors.LogBackground = ColorLogBackground
 	cfg.Colors.Cursor = ColorCursor
 
-	// 2. Decode the TOML file if it is found on disk
+	// 2. Decode the TOML file if found and track custom window overrides
 	if _, err := os.Stat(filePath); err == nil {
-		if _, err := toml.DecodeFile(filePath, &cfg); err != nil {
-			return err
+		if meta, err := toml.DecodeFile(filePath, &cfg); err == nil {
+			HasCustomWidth = meta.IsDefined("window", "width")
+			HasCustomHeight = meta.IsDefined("window", "height")
 		}
 	}
 
-	// 3. Update global window constraint variables
-	WindowWidth = cfg.Window.Width
-	WindowHeight = cfg.Window.Height
+	// 3. Set global window constraints if specified in config
+	if HasCustomWidth {
+		WindowWidth = cfg.Window.Width
+	}
+	if HasCustomHeight {
+		WindowHeight = cfg.Window.Height
+	}
 
-	// CRITICAL: Recalculate dependent grid layout numbers based on the new dimensions
-	ListHeight = WindowHeight - OtherContentHeight
-	ListWidth = WindowWidth - 2
-	ListHeightHalf = ListHeight / 2
-	ListHeightQuarter = ListHeight / 4
-	ListWidthHalf = ListWidth / 2
-	ListWidthQuarter = ListWidth / 4
-	ListWidthEigth = ListWidth / 8
-	ListWidthSixteenth = ListWidth / 16
-	HeaderSpacing = (WindowWidth - 20) / 8
-
-	PopupWidth = (ListWidth * 3) / 5
-	PopupHeight = ListWidthHalf
+	// Recalculate dependent grid layout variables
+	RecalculateDimensions()
 
 	// 4. Update style colors
 	ColorForeground = cfg.Colors.Foreground
@@ -85,8 +84,10 @@ func LoadConfig(filePath string) error {
 	ColorDivider = cfg.Colors.DividerBackground
 	ColorCursor = cfg.Colors.Cursor
 
-	// 5. Build Lipgloss styles with the newly mapped sizes and themes
+	// 5. Build Lipgloss styles
 	InitStyles()
 
 	return nil
 }
+
+

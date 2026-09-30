@@ -3,22 +3,29 @@ package config
 
 // Enforced window constraint thresholds
 var (
-	WindowWidth  = 70
+	WindowWidth  = 75
 	WindowHeight = 25
+)
+
+var (
+	SmallWidth = 50
+	TinyWidth = 25
+	TruncateWidth = WindowWidth - 5
+)
+
+var (
+	MinWindowWidth = 20
+	MinWindowHeight = 15
+	MaxWindowWidth = 80
+	MaxWindowHeight = 30
 )
 
 // All dependent layout items MUST be vars so they can be recalculated
 var (
 	OtherContentHeight = 10
 	ListHeight         = WindowHeight - OtherContentHeight
-	ListWidth          = WindowWidth - 2
-	ListHeightHalf     = ListHeight / 2
-	ListHeightQuarter  = ListHeight / 4
-	ListWidthHalf      = ListWidth / 2
-	ListWidthQuarter   = ListWidth / 4
-	ListWidthEigth     = ListWidth / 8
-	ListWidthSixteenth = ListWidth / 16
-)
+	ListWidth          = WindowWidth - 6
+	)
 
 // Header
 var (
@@ -28,8 +35,26 @@ var (
 // Popup box layout variables
 var (
 	PopupWidth  = (ListWidth * 3) / 5
-	PopupHeight = ListWidthHalf
+	PopupHeight = ListWidth / 2
 )
+
+
+// RecalculateDimensions updates all internal layout metrics based on current WindowWidth / WindowHeight
+func RecalculateDimensions() {
+	ListHeight = WindowHeight - OtherContentHeight
+	if ListHeight < 2 {
+		ListHeight = 2
+	}
+
+	ListWidth = WindowWidth - 6
+	HeaderSpacing = (WindowWidth - 20) / 8
+
+	TruncateWidth = WindowWidth - 5
+
+
+	PopupWidth = (ListWidth * 3) / 5
+	PopupHeight = ListHeight / 3
+}
 
 func Truncate(s string, max int) string {
 	runes := []rune(s)

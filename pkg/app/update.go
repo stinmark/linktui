@@ -18,17 +18,42 @@ func (m *AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.TerminalWidth = windowMsg.Width
 		m.TerminalHeight = windowMsg.Height
 
-		if config.WindowWidth < 70 || config.WindowHeight < 25 {
-			m.SizeError = fmt.Sprintf("⚠️  Configuration Error!\n\n  Configured sizes too small...\n  Absolute Minimum: 70x25")
-			return m, nil
+		// 1. Pick base width/height (Terminal size by default, Config override if specified)
+		targetWidth := windowMsg.Width
+		if config.HasCustomWidth {
+			targetWidth = config.WindowWidth
 		}
-		if config.WindowWidth > windowMsg.Width || config.WindowHeight > windowMsg.Height {
-			m.SizeError = fmt.Sprintf("⚠️  Terminal screen too small!\n\n  Please resize your terminal window.")
+
+		targetHeight := windowMsg.Height
+		if config.HasCustomHeight {
+			targetHeight = config.WindowHeight
+		}
+
+		// 2. Cap dimensions with min(target, MaxWindow)
+		if targetWidth > config.MaxWindowWidth {
+			targetWidth = config.MaxWindowWidth
+		}
+		if targetHeight > config.MaxWindowHeight {
+			targetHeight = config.MaxWindowHeight
+		}
+
+		// 3. Check against minimum required dimensions
+		if targetWidth < config.MinWindowWidth || targetHeight < config.MinWindowHeight {
+			m.SizeError = fmt.Sprintf("⚠️ Terminal screen too small!\n\n  Current: %dx%d\n  Minimum required: %dx%d",
+				targetWidth, targetHeight, config.MinWindowWidth, config.MinWindowHeight)
 			return m, nil
 		}
 		m.SizeError = ""
-		windowMsg.Width = config.WindowWidth
-		windowMsg.Height = config.WindowHeight
+
+		// 4. Update global sizes and recalculate grid dependents
+		config.WindowWidth = targetWidth
+		config.WindowHeight = targetHeight
+		config.RecalculateDimensions()
+		config.InitStyles()
+
+		// Pass computed dimensions down to active view models
+		windowMsg.Width = targetWidth
+		windowMsg.Height = targetHeight
 		msg = windowMsg
 	}
 

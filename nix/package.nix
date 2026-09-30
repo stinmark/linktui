@@ -12,7 +12,7 @@ buildGoApplication {
 
   meta = with lib; {
     description = "Tui based wifi, bluetooth and vpn manager for linux";
-    homepage = "https://github.com/austinemk/linktui";
+    homepage = "https://github.com/stinmark/linktui";
     license = licenses.mit;
     maintainers = with maintainers; [ Immelancholy ];
     mainProgram = "linktui";

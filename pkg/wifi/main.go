@@ -14,10 +14,10 @@ import (
 
 func New() Model {
 	columns := []table.Column{
-		{Title: "Status", Width: config.ListWidthSixteenth},
-		{Title: "Network Name (SSID)", Width: config.ListWidthHalf},
-		{Title: "Signal", Width: config.ListWidthSixteenth},
-		{Title: "Security", Width: config.ListWidthEigth},
+		{Title: "Status", Width: config.ListWidth/10},
+		{Title: "Network Name (SSID)", Width: (config.ListWidth * 2 )/10},
+		{Title: "Signal", Width: (config.ListWidth * 2) /10},
+		{Title: "Security", Width: config.ListWidth /10},
 	}
 
 	t := table.New(table.WithColumns(columns))

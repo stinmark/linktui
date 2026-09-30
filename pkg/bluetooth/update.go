@@ -5,6 +5,7 @@ import (
 
 	"charm.land/bubbles/v2/table"
 	tea "charm.land/bubbletea/v2"
+	"github.com/austinemk/linktui/pkg/config"
 )
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
@@ -83,13 +84,23 @@ func (m *Model) syncTableRows() {
 	var rows []table.Row
 	m.Table.SetRows(nil)
 
+	// 1. Sync table viewport width to latest ListWidth
+	m.Table.SetWidth(config.ListWidth)
+	m.Table.SetHeight(config.ListHeight)
+
+	// 2. Proportionately calculate column widths without remainder overflow
+	iconCol := (config.ListWidth * 5) / 45
+	nameCol := (config.ListWidth * 18) / 45
+	macCol := (config.ListWidth * 17) / 45
+
+	m.Table.SetColumns([]table.Column{
+		{Title: "", Width: iconCol},
+		{Title: "", Width: nameCol},
+		{Title: "", Width: macCol},
+	})
+
 	for _, dev := range m.Devices {
-		//fmt.Printf("devices: %s", dev.Icon)
-		statusIcon := "󰂯"
-		/*if dev.Icon != "" {
-			statusIcon = dev.Icon
-		}*/
-		statusIcon = dev.Icon
+		statusIcon := dev.Icon
 		if dev.Connected {
 			statusIcon = ""
 		}
@@ -100,8 +111,10 @@ func (m *Model) syncTableRows() {
 			dev.MAC,
 		})
 	}
+
 	m.Table.SetRows(rows)
-	if m.Table.Cursor() >= len(rows) {
+
+	if m.Table.Cursor() >= len(rows) && len(rows) > 0 {
 		m.Table.GotoTop()
 		m.Cursor = m.Table.Cursor()
 	}

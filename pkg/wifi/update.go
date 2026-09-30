@@ -64,12 +64,16 @@ func (m *Model) syncTableRows() {
 
 	if m.Scanning {
 		m.Table.SetRows(nil)
-		// V2 Fix: Explicitly mapped table.Column keys
+		col1 := (config.ListWidth * 2) / 45
+		col2 := (config.ListWidth * 31) / 45
+		col3 := (config.ListWidth * 5) /45
+		col4 := (config.ListWidth * 2)/ 45
+
 		m.Table.SetColumns([]table.Column{
-			{Title: "", Width: config.ListWidthSixteenth},
-			{Title: "", Width: config.ListWidthHalf},
-			{Title: "", Width: config.ListWidthEigth},
-			{Title: "", Width: config.ListWidthSixteenth},
+			{Title: "", Width: col1},
+			{Title: "", Width: col2},
+			{Title: "", Width: col3},
+			{Title: "", Width: col4},
 		})
 
 		for _, ap := range m.ActiveAPs {
@@ -86,11 +90,16 @@ func (m *Model) syncTableRows() {
 		}
 	} else {
 		m.Table.SetRows(nil)
-		// V2 Fix: Explicitly mapped table.Column keys
+		
+		// Proportional distribution for saved networks table
+		nameWidth := (config.ListWidth * 32) / 70
+		autoWidth := (config.ListWidth * 5) / 70
+		uuidWidth := (config.ListWidth * 28) /70 
+
 		m.Table.SetColumns([]table.Column{
-			{Title: "", Width: config.ListWidthHalf},
-			{Title: "", Width: config.ListWidthSixteenth},
-			{Title: "", Width: (config.ListWidthHalf - config.ListWidthSixteenth)},
+			{Title: "", Width: nameWidth},
+			{Title: "", Width: autoWidth},
+			{Title: "", Width: uuidWidth},
 		})
 
 		for _, prof := range m.Saved {
@@ -112,7 +121,7 @@ func (m *Model) syncTableRows() {
 
 	m.Table.SetRows(rows)
 
-	if m.Table.Cursor() >= len(rows) {
+	if m.Table.Cursor() >= len(rows) && len(rows) > 0 {
 		m.Table.GotoTop()
 		m.Cursor = m.Table.Cursor()
 	}

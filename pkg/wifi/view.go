@@ -40,20 +40,29 @@ func (m Model) View() string {
 
 	return background
 }
-
 func (m Model) adapterBlock() string {
 	linkStat := false
 	if m.Adapter.State == "Connected" {
 		linkStat = true
 	}
 
-	lines := []string{fmt.Sprintf("device: %s", m.Adapter.Interface)}
-	lines = append(lines, fmt.Sprintf("  connected: %s", map[bool]string{true: "", false: ""}[linkStat]))
-	lines = append(lines, fmt.Sprintf("  power: %s", map[bool]string{true: "󰤨 ", false: "󰤭 "}[m.Adapter.Enabled]))
-	lines = append(lines, fmt.Sprintf("  status: %s", map[bool]string{true: "scanning", false: "saved"}[m.Scanning]))
+	var lines []string
 
-	// V2: Horizontally combine block lines using Alignment
-	return config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...))
+	// Only include device info if window width is larger than SmallWidth (40)
+	if config.WindowWidth > config.SmallWidth {
+		lines = append(lines, fmt.Sprintf("device: %s", m.Adapter.Interface))
+	}
+
+	lines = append(lines, fmt.Sprintf(" connected: %s", map[bool]string{true: "", false: ""}[linkStat]))
+	lines = append(lines, fmt.Sprintf(" power: %s", map[bool]string{true: "󰤨 ", false: "󰤭 "}[m.Adapter.Enabled]))
+
+	// Only include status info if window width is larger than SmallWidth (40)
+	if config.WindowWidth > config.SmallWidth {
+		lines = append(lines, fmt.Sprintf(" status: %s", map[bool]string{true: "scanning", false: "saved"}[m.Scanning]))
+	}
+
+	// Join items with padding so they stay legible in tight spaces
+	return config.Truncate(config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...)), config.TruncateWidth)
 }
 
 func (m Model) ScanningBlock() string {
@@ -82,14 +91,16 @@ func (m Model) SavedBlock() string {
 }
 
 func (m Model) PasswordBlock() string {
-	passContent := fmt.Sprintf("Enter Password for: %s\n\n %s", m.SelectedAP.SSID, m.PassInput.View())
-	return config.Styles.PopupStyle.Render(passContent)
+		return config.Styles.PopupStyle.Render(
+		lipgloss.JoinVertical(lipgloss.Center, 
+	"password", string(m.PassInput.View()),
+	),)
 }
 
 func (m Model) OptionsBlock() string {
 	options := []string{"autoconnect/off", "forget"}
 	var menuLines []string
-	menuLines = append(menuLines, lipgloss.NewStyle().Render(fmt.Sprintf("%s options", m.SelectedSaved.Name)))
+	/*menuLines = append(menuLines, lipgloss.NewStyle().Render(fmt.Sprintf("%s options", m.SelectedSaved.Name)))*/
 	for i, opt := range options {
 		if m.MenuCursor == i {
 			menuLines = append(menuLines, config.Styles.HighlightText.Render(opt))
@@ -120,9 +131,13 @@ func (m Model) HintsBlock() string {
 
 	hints := actionsHints + " | q: quit"
 
+	if(config.WindowWidth <= config.TinyWidth) {
+		return ""
+	}
+
 	return lipgloss.JoinVertical(
 		lipgloss.Center,
 		config.DividerBorder(),
-		config.Styles.Hints.Render(hints),
+		config.Truncate( config.Styles.Hints.Render(hints), config.TruncateWidth),
 	)
 }

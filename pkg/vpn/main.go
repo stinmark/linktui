@@ -14,9 +14,9 @@ import (
 
 func New() Model {
 	columns := []table.Column{
-		{Title: "", Width: config.ListWidthHalf},
-		{Title: "", Width: config.ListWidthQuarter},
-		{Title: "", Width: config.ListWidthQuarter},
+		{Title: "", Width: config.ListWidth / 2},
+		{Title: "", Width: config.ListWidth /4},
+		{Title: "", Width: config.ListWidth /5},
 	}
 
 	t := table.New(table.WithColumns(columns))

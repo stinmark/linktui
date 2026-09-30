@@ -82,7 +82,7 @@ func InitStyles() {
 		Padding(0, 1).
 		Foreground(lipgloss.Color("#1e1e2e")).
 		Bold(true).
-		Width(WindowWidth - 2).
+		Width(WindowWidth - 4).
 		AlignHorizontal(lipgloss.Center)
 
 	// Tab structures
@@ -104,9 +104,10 @@ func InitStyles() {
 	Styles.PopupStyle = lipgloss.NewStyle().
 		Border(lipgloss.NormalBorder()).
 		Padding(1).
-		Width(int(math.Floor(float64(ListWidth)*0.6))).
-		Margin(0, int(math.Floor(float64(ListWidth)*0.15))).
-		Height(ListHeightHalf)
+		Width(int(math.Floor(float64(ListWidth)*0.8))).
+		Margin(0).
+		Height(ListHeight /3).
+		AlignVertical(lipgloss.Center)
 
 	if ColorBorder != "" {
 		Styles.PopupStyle = Styles.PopupStyle.BorderForeground(lipgloss.Color(ColorBorder))

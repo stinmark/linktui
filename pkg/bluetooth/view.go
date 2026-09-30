@@ -43,13 +43,16 @@ func (m Model) View() string {
 // AdapterBlock for displaying adapter info
 func (m Model) AdapterBlock() string {
 	lines := []string{fmt.Sprintf("power: %s", map[bool]string{true: "", false: ""}[m.Adapter.Powered])}
+	if( config.WindowWidth > config.SmallWidth){
 	lines = append(lines, fmt.Sprintf("   discoverable: %s", map[bool]string{true: "", false: ""}[m.Adapter.Discoverable]))
-
+}
+if( config.WindowWidth > config.SmallWidth){
 	lines = append(lines, fmt.Sprintf("   pairable: %s", map[bool]string{true: "", false: ""}[m.Adapter.Pairable]))
+}
 
 	lines = append(lines, fmt.Sprintf("   state: %s", map[bool]string{true: "discovering", false: "saved"}[m.Scanning]))
 
-	return config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...))
+	return config.Truncate(config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...)), config.TruncateWidth)
 }
 
 func (m Model) ScanningBlock() string {
@@ -62,7 +65,7 @@ func (m Model) ScanningBlock() string {
 }
 
 func (m Model) SavedBlock() string {
-	title := config.Styles.Heading.Render("󰆓 Known Paired Storage Devices")
+	title := config.Styles.Heading.Render("󰆓 Paired Devices")
 	table := m.Table.View()
 
 	return lipgloss.NewStyle().Render(
@@ -101,10 +104,14 @@ func (m Model) HintsBlock() string {
 		actionsHints = "j/k:nav | p:power | d:discoverable | b:pairable | s:discover"
 	}
 
+	if(config.WindowWidth <= config.TinyWidth) {
+		return  ""
+	}
+
 	return lipgloss.JoinVertical(
 		lipgloss.Center,
 		config.DividerBorder(),
-		config.Styles.Hints.Render(actionsHints),
+		config.Truncate(config.Styles.Hints.Render(actionsHints), config.TruncateWidth),
 	)
 }
 
