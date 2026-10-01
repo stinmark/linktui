@@ -66,14 +66,14 @@ func (m *Model) syncTableRows() {
 	var rows []table.Row
 
 	// 1. Sync Table & FilePicker Viewport Dimensions
-	m.Table.SetWidth(config.ListWidth)
-	m.Table.SetHeight(config.ListHeight)
-	m.FilePicker.SetHeight(config.ListHeight)
+	m.Table.SetWidth(config.ContentWidth)
+	m.Table.SetHeight(config.	ContentHeight -5)
+	m.FilePicker.SetHeight(config.ContentHeight -5)
 
 	// 2. Proportionately distribute column widths to fill 100% of ListWidth
-	nameWidth := (config.ListWidth * 22) / 45;
-	typeWidth := (config.ListWidth * 10) / 45;
-	statusWidth := (config.ListWidth * 8) /45;
+	nameWidth := (config.ContentWidth * 22) / 45;
+	typeWidth := (config.ContentWidth * 10) / 45;
+	statusWidth := (config.ContentWidth * 8) /45;
 
 	m.Table.SetColumns([]table.Column{
 		{Title: "", Width: nameWidth},

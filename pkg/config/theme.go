@@ -104,9 +104,9 @@ func InitStyles() {
 	Styles.PopupStyle = lipgloss.NewStyle().
 		Border(lipgloss.NormalBorder()).
 		Padding(1).
-		Width(int(math.Floor(float64(ListWidth)*0.8))).
+		Width(int(math.Floor(float64(ContentWidth)*0.8))).
 		Margin(0).
-		Height(ListHeight /3).
+		Height(ContentHeight /3).
 		AlignVertical(lipgloss.Center)
 
 	if ColorBorder != "" {

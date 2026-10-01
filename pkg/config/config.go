@@ -8,9 +8,7 @@ var (
 )
 
 var (
-	SmallWidth = 50
-	TinyWidth = 25
-	TruncateWidth = WindowWidth - 5
+	SmallWidth = 30
 )
 
 var (
@@ -22,9 +20,8 @@ var (
 
 // All dependent layout items MUST be vars so they can be recalculated
 var (
-	OtherContentHeight = 10
-	ListHeight         = WindowHeight - OtherContentHeight
-	ListWidth          = WindowWidth - 6
+	ContentHeight         = WindowHeight - 5
+	ContentWidth          = WindowWidth - 4
 	)
 
 // Header
@@ -34,26 +31,23 @@ var (
 
 // Popup box layout variables
 var (
-	PopupWidth  = (ListWidth * 3) / 5
-	PopupHeight = ListWidth / 2
+	PopupWidth  = (ContentWidth * 3) / 5
+	PopupHeight = ContentHeight / 2
 )
 
 
 // RecalculateDimensions updates all internal layout metrics based on current WindowWidth / WindowHeight
 func RecalculateDimensions() {
-	ListHeight = WindowHeight - OtherContentHeight
-	if ListHeight < 2 {
-		ListHeight = 2
+	ContentHeight = WindowHeight - 5
+	if ContentHeight < 8 {
+		ContentHeight = 8
 	}
 
-	ListWidth = WindowWidth - 6
-	HeaderSpacing = (WindowWidth - 20) / 8
+	ContentWidth = WindowWidth - 4
+	HeaderSpacing = (WindowWidth - 20) / 8	
 
-	TruncateWidth = WindowWidth - 5
-
-
-	PopupWidth = (ListWidth * 3) / 5
-	PopupHeight = ListHeight / 3
+	PopupWidth = (ContentWidth * 3) / 5
+	PopupHeight = ContentHeight / 3
 }
 
 func Truncate(s string, max int) string {

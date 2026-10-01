@@ -52,7 +52,7 @@ if( config.WindowWidth > config.SmallWidth){
 
 	lines = append(lines, fmt.Sprintf("   state: %s", map[bool]string{true: "discovering", false: "saved"}[m.Scanning]))
 
-	return config.Truncate(config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...)), config.TruncateWidth)
+	return config.Truncate(config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...)), config.ContentWidth)
 }
 
 func (m Model) ScanningBlock() string {
@@ -65,7 +65,7 @@ func (m Model) ScanningBlock() string {
 }
 
 func (m Model) SavedBlock() string {
-	title := config.Styles.Heading.Render("󰆓 Paired Devices")
+	title := config.Styles.Heading.Render("Paired Devices")
 	table := m.Table.View()
 
 	return lipgloss.NewStyle().Render(
@@ -104,14 +104,14 @@ func (m Model) HintsBlock() string {
 		actionsHints = "j/k:nav | p:power | d:discoverable | b:pairable | s:discover"
 	}
 
-	if(config.WindowWidth <= config.TinyWidth) {
+	if(config.WindowWidth <= config.SmallWidth) {
 		return  ""
 	}
 
 	return lipgloss.JoinVertical(
 		lipgloss.Center,
 		config.DividerBorder(),
-		config.Truncate(config.Styles.Hints.Render(actionsHints), config.TruncateWidth),
+		config.Truncate(config.Styles.Hints.Render(actionsHints), config.ContentWidth),
 	)
 }
 

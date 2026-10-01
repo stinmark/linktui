@@ -9,20 +9,20 @@ import (
 	"charm.land/bubbles/v2/table"
 	"charm.land/bubbles/v2/textinput"
 	tea "charm.land/bubbletea/v2"
-	"charm.land/lipgloss/v2"
+	//"charm.land/lipgloss/v2"
 )
 
 func New() Model {
 	columns := []table.Column{
-		{Title: "Status", Width: config.ListWidth/10},
-		{Title: "Network Name (SSID)", Width: (config.ListWidth * 2 )/10},
-		{Title: "Signal", Width: (config.ListWidth * 2) /10},
-		{Title: "Security", Width: config.ListWidth /10},
+		{Title: "", Width: config.ContentWidth/10},
+		{Title: "", Width: (config.ContentWidth * 2 )/10},
+		{Title: "", Width: (config.ContentWidth * 2) /10},
+		{Title: "", Width: config.ContentWidth /10},
 	}
 
 	t := table.New(table.WithColumns(columns))
-	t.SetWidth(config.ListWidth)
-	t.SetHeight(config.ListHeight)
+	t.SetWidth(config.ContentWidth)
+	t.SetHeight(config.ContentHeight)
 	t.Focus()
 
 	ti := textinput.New()
@@ -32,7 +32,7 @@ func New() Model {
 	ti.Focus()
 
 	s := table.DefaultStyles()
-	s.Header = lipgloss.NewStyle().Height(0).Padding(0, 0).MaxHeight(0)
+	//s.Header = lipgloss.NewStyle().Height(0).Padding(0, 0).MaxHeight(0)
 	s.Selected = s.Selected.
 		Foreground(config.Styles.HighlightText.GetForeground()).
 		Background(config.Styles.HighlightText.GetBackground()).

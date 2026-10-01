@@ -50,19 +50,21 @@ func (m Model) adapterBlock() string {
 
 	// Only include device info if window width is larger than SmallWidth (40)
 	if config.WindowWidth > config.SmallWidth {
-		lines = append(lines, fmt.Sprintf("device: %s", m.Adapter.Interface))
+		lines = append(lines, fmt.Sprintf("%s", m.Adapter.Interface))
 	}
 
-	lines = append(lines, fmt.Sprintf(" connected: %s", map[bool]string{true: "", false: ""}[linkStat]))
-	lines = append(lines, fmt.Sprintf(" power: %s", map[bool]string{true: "󰤨 ", false: "󰤭 "}[m.Adapter.Enabled]))
+lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: "(󰤨) on,", false: "(󰤭) off,"}[m.Adapter.Enabled]))
 
+
+	lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: "() connected,", false: "() not connected,"}[linkStat]))
+	
 	// Only include status info if window width is larger than SmallWidth (40)
-	if config.WindowWidth > config.SmallWidth {
-		lines = append(lines, fmt.Sprintf(" status: %s", map[bool]string{true: "scanning", false: "saved"}[m.Scanning]))
+	if (config.WindowWidth > config.SmallWidth && m.Scanning) {
+		lines = append(lines, "scanning")
 	}
 
 	// Join items with padding so they stay legible in tight spaces
-	return config.Truncate(config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...)), config.TruncateWidth)
+	return config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...))
 }
 
 func (m Model) ScanningBlock() string {
@@ -131,13 +133,13 @@ func (m Model) HintsBlock() string {
 
 	hints := actionsHints + " | q: quit"
 
-	if(config.WindowWidth <= config.TinyWidth) {
+	if(config.WindowWidth <= config.SmallWidth) {
 		return ""
 	}
 
 	return lipgloss.JoinVertical(
 		lipgloss.Center,
 		config.DividerBorder(),
-		config.Truncate( config.Styles.Hints.Render(hints), config.TruncateWidth),
+		config.Truncate( config.Styles.Hints.Render(hints), config.ContentWidth),
 	)
 }

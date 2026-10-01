@@ -54,8 +54,8 @@ func (m *AppModel) lazyLoadTab(tab Tab) tea.Cmd {
 	m.LoadedTabs[tab] = true
 
 	switch tab {
-	case WifiTab:
-		return m.WifiView.Init()
+		case WifiTab:
+			return m.WifiView.Init()
 	case BluetoothTab:
 		return m.BtView.Init()
 	case VpnTab:

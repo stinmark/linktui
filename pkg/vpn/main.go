@@ -14,14 +14,14 @@ import (
 
 func New() Model {
 	columns := []table.Column{
-		{Title: "", Width: config.ListWidth / 2},
-		{Title: "", Width: config.ListWidth /4},
-		{Title: "", Width: config.ListWidth /5},
+		{Title: "", Width: config.ContentWidth / 2},
+		{Title: "", Width: config.ContentWidth /4},
+		{Title: "", Width: config.ContentWidth /5},
 	}
 
 	t := table.New(table.WithColumns(columns))
-	t.SetWidth(config.ListWidth)
-	t.SetHeight(config.ListHeight)
+	t.SetWidth(config.ContentWidth)
+	t.SetHeight(config.ContentHeight - 4)
 	t.Focus()
 
 	s := table.DefaultStyles()
@@ -36,7 +36,7 @@ func New() Model {
 	fp.AllowedTypes = []string{".conf", ".wg"}
 	fp.CurrentDirectory, _ = os.UserHomeDir()
 	fp.AutoHeight = false
-	fp.SetHeight(config.ListHeight)
+	fp.SetHeight(config.ContentHeight - 5)
 	fp.Styles.File = fp.Styles.File.MaxWidth(30)
 	fp.Styles.Directory = fp.Styles.Directory.MaxWidth(30)
 	fp.Styles.Selected = fp.Styles.Selected.MaxWidth(30)

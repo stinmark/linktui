@@ -13,14 +13,14 @@ import (
 
 func New() Model {
 	columns := []table.Column{
-		{Title: "", Width: (config.ListWidth * 2) / 45},
-		{Title: "", Width: (config.ListWidth * 10) / 45},
-		{Title: "", Width: (config.ListWidth * 13) / 45},
+		{Title: "", Width: (config.ContentWidth * 2) / 45},
+		{Title: "", Width: (config.ContentWidth * 10) / 45},
+		{Title: "", Width: (config.ContentWidth * 13) / 45},
 	}
 
 	t := table.New(table.WithColumns(columns))
-	t.SetWidth(config.ListWidth)
-	t.SetHeight(config.ListHeight)
+	t.SetWidth(config.ContentWidth)
+	t.SetHeight(config.ContentHeight)
 	t.Focus()
 
 	s := table.DefaultStyles()

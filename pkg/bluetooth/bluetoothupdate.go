@@ -85,13 +85,13 @@ func (m *Model) syncTableRows() {
 	m.Table.SetRows(nil)
 
 	// 1. Sync table viewport width to latest ListWidth
-	m.Table.SetWidth(config.ListWidth)
-	m.Table.SetHeight(config.ListHeight)
+	m.Table.SetWidth(config.ContentWidth)
+	m.Table.SetHeight(config.ContentHeight -5)
 
 	// 2. Proportionately calculate column widths without remainder overflow
-	iconCol := (config.ListWidth * 5) / 45
-	nameCol := (config.ListWidth * 18) / 45
-	macCol := (config.ListWidth * 17) / 45
+	iconCol := (config.ContentWidth * 5) / 45
+	nameCol := (config.ContentWidth * 18) / 45
+	macCol := (config.ContentWidth * 17) / 45
 
 	m.Table.SetColumns([]table.Column{
 		{Title: "", Width: iconCol},

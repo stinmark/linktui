@@ -62,12 +62,17 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 func (m *Model) syncTableRows() {
 	var rows []table.Row
 
+	// 1. Sync table viewport width to latest ListWidth
+	m.Table.SetWidth(config.ContentWidth)
+	m.Table.SetHeight(config.ContentHeight - 5)
+
+
 	if m.Scanning {
 		m.Table.SetRows(nil)
-		col1 := (config.ListWidth * 2) / 45
-		col2 := (config.ListWidth * 31) / 45
-		col3 := (config.ListWidth * 5) /45
-		col4 := (config.ListWidth * 2)/ 45
+		col1 := (config.ContentWidth * 2) / 45
+		col2 := (config.ContentWidth * 31) / 45
+		col3 := (config.ContentWidth * 5) /45
+		col4 := (config.ContentWidth * 2)/ 45
 
 		m.Table.SetColumns([]table.Column{
 			{Title: "", Width: col1},
@@ -92,9 +97,9 @@ func (m *Model) syncTableRows() {
 		m.Table.SetRows(nil)
 		
 		// Proportional distribution for saved networks table
-		nameWidth := (config.ListWidth * 32) / 70
-		autoWidth := (config.ListWidth * 5) / 70
-		uuidWidth := (config.ListWidth * 28) /70 
+		nameWidth := (config.ContentWidth * 30) / 70
+		autoWidth := (config.ContentWidth * 5) / 70
+		uuidWidth := (config.ContentWidth * 24) /70 
 
 		m.Table.SetColumns([]table.Column{
 			{Title: "", Width: nameWidth},
