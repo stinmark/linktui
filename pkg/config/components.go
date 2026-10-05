@@ -9,11 +9,11 @@ import (
 // RenderHeader draws the main app banner and menu selections
 func RenderHeader(activeTab int) string {
 	var figure string
-	if WindowWidth > 60 {
+	if WindowWidth > 65 {
 	figure = `░█░░░▀█▀░█▀█░█░█░▀█▀░█░█░▀█▀
 ░█░░░░█░░█░█░█▀▄░░█░░█░█░░█░
 ░▀▀▀░▀▀▀░▀░▀░▀░▀░░▀░░▀▀▀░▀▀▀`
-} else if WindowWidth > 45 {
+} else if WindowWidth > 50 {
 	figure = ` ⡇  ⡇ ⡷⣸ ⣇⠜ ⢹⠁ ⡇⢸ ⡇
  ⠧⠤ ⠇ ⠇⠹ ⠇⠱ ⠸  ⠣⠜ ⠇`
 } else {
@@ -41,11 +41,11 @@ func RenderHeader(activeTab int) string {
 		tabs = append(tabs, Styles.InactiveTab.Render("vpn"))
 	}
 
-	spacing := " "
+/*	spacing := " "
 	for i := 1; i < HeaderSpacing; i++ {
 		spacing = spacing + " "
 	}
-
+*/
 	// V2 Change: Horizontally align using layout position method
 	tabBox := Styles.TabsBox.Render(strings.Join(tabs, " | "))
 
