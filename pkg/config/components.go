@@ -9,11 +9,11 @@ import (
 // RenderHeader draws the main app banner and menu selections
 func RenderHeader(activeTab int) string {
 	var figure string
-	if WindowWidth > 65 {
+	if WindowWidth > 60 {
 	figure = `░█░░░▀█▀░█▀█░█░█░▀█▀░█░█░▀█▀
 ░█░░░░█░░█░█░█▀▄░░█░░█░█░░█░
 ░▀▀▀░▀▀▀░▀░▀░▀░▀░░▀░░▀▀▀░▀▀▀`
-} else if WindowWidth > 50 {
+} else if WindowWidth > 45 {
 	figure = ` ⡇  ⡇ ⡷⣸ ⣇⠜ ⢹⠁ ⡇⢸ ⡇
  ⠧⠤ ⠇ ⠇⠹ ⠇⠱ ⠸  ⠣⠜ ⠇`
 } else {

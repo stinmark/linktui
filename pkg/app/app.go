@@ -22,7 +22,6 @@ type AppModel struct {
 	WifiView       wifi.Model
 	BtView         bluetooth.Model
 	VpnView        vpn.Model
-	LogMessage     string
 	SizeError      string
 	LoadedTabs     map[Tab]bool
 	BusReady       bool

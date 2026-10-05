@@ -44,12 +44,12 @@ func (m *AppModel) View() tea.View {
 		}
 	}
 
-	var logView string
+	/*var logView string
 	if m.LogMessage != "" {
 		logView = lipgloss.NewStyle().Foreground(lipgloss.Color("#F59E0B")).Render("\n[LOG] " + m.LogMessage)
-	}
+	}*/
 
-	mainLayout := lipgloss.JoinVertical(lipgloss.Left, header, body, logView)
+	mainLayout := lipgloss.JoinVertical(lipgloss.Left, header, body)
 	mainLayout = config.Styles.Container.Render(mainLayout)
 
 	// full-window style to force center alignment

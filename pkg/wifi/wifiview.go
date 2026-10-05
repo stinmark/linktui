@@ -22,7 +22,10 @@ func (m Model) View() string {
 	}
 
 	bgSegments = append(bgSegments, m.adapterBlock())
-	bgSegments = append(bgSegments, m.HintsBlock())
+
+	if(config.ShowHints && m.Err == nil && !(config.WindowWidth <= config.SmallWidth)){
+		bgSegments = append(bgSegments, m.HintsBlock())
+	}
 
 	if m.Err != nil {
 		bgSegments = append(bgSegments, config.LogBlock(m.Err.Error()))
@@ -53,14 +56,14 @@ func (m Model) adapterBlock() string {
 		lines = append(lines, fmt.Sprintf("%s", m.Adapter.Interface))
 	}
 
-lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: "(󰤨) on,", false: "(󰤭) off,"}[m.Adapter.Enabled]))
+lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: "(󰤨 on);", false: "(󰤭 off);"}[m.Adapter.Enabled]))
 
 
-	lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: "() connected,", false: "() not connected,"}[linkStat]))
+	lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: " connected;", false: " disconnected;"}[linkStat]))
 	
 	// Only include status info if window width is larger than SmallWidth (40)
 	if (config.WindowWidth > config.SmallWidth && m.Scanning) {
-		lines = append(lines, "scanning")
+		lines = append(lines, " scanning")
 	}
 
 	// Join items with padding so they stay legible in tight spaces
@@ -121,7 +124,7 @@ func (m Model) HintsBlock() string {
 	case StatePasswordInput:
 		actionsHints = "esc: close | enter: submit"
 	case StateSavedActionsMenu:
-		actionsHints = "j/k: nav | backspace: back "
+		actionsHints = "j/k: nav | backspace: back"
 	case StateNormal:
 		actionsHints = "j/k: nav | p: power"
 		if m.Scanning {

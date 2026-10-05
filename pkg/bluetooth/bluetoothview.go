@@ -22,7 +22,10 @@ func (m Model) View() string {
 	}
 
 	segments = append(segments, m.AdapterBlock())
-	segments = append(segments, m.HintsBlock())
+
+	if(config.ShowHints && m.Err == nil && !(config.WindowWidth <= config.SmallWidth)){
+		segments = append(segments, m.HintsBlock())
+	}
 
 	if m.Err != nil {
 		segments = append(segments, config.LogBlock(m.Err.Error()))
@@ -42,15 +45,17 @@ func (m Model) View() string {
 
 // AdapterBlock for displaying adapter info
 func (m Model) AdapterBlock() string {
-	lines := []string{fmt.Sprintf("power: %s", map[bool]string{true: "", false: ""}[m.Adapter.Powered])}
+	lines := []string{fmt.Sprintf("%s", map[bool]string{true: " on;", false: " off;"}[m.Adapter.Powered])}
 	if( config.WindowWidth > config.SmallWidth){
-	lines = append(lines, fmt.Sprintf("   discoverable: %s", map[bool]string{true: "", false: ""}[m.Adapter.Discoverable]))
+	lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: " discoverable;", false: " hidden;"}[m.Adapter.Discoverable]))
 }
 if( config.WindowWidth > config.SmallWidth){
-	lines = append(lines, fmt.Sprintf("   pairable: %s", map[bool]string{true: "", false: ""}[m.Adapter.Pairable]))
+	lines = append(lines, fmt.Sprintf(" %s", map[bool]string{true: " pairable;", false: " unpairable;"}[m.Adapter.Pairable]))
 }
 
-	lines = append(lines, fmt.Sprintf("   state: %s", map[bool]string{true: "discovering", false: "saved"}[m.Scanning]))
+ if m.Scanning {
+	 lines = append(lines, "discovering")
+ }
 
 	return config.Truncate(config.Styles.AdapterInfo.Render(lipgloss.JoinHorizontal(lipgloss.Center, lines...)), config.ContentWidth)
 }

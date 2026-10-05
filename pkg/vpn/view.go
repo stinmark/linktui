@@ -26,7 +26,9 @@ func (m Model) View() string {
 
 	segments = append(segments, m.IPInfoBlock())
 
-	segments = append(segments, m.HintsBlock())
+	if(config.ShowHints && m.Err == nil && !(config.WindowWidth <= config.SmallWidth)){
+			segments = append(segments, m.HintsBlock())
+	}
 
 	if m.Err != nil {
 		segments = append(segments, config.LogBlock(m.Err.Error()))

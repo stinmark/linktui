@@ -36,12 +36,15 @@ var (
 )
 
 
+// booleans
+ var (
+	 ShowHints = true
+)
+
+
 // RecalculateDimensions updates all internal layout metrics based on current WindowWidth / WindowHeight
 func RecalculateDimensions() {
-	ContentHeight = WindowHeight - 5
-	if ContentHeight < 8 {
-		ContentHeight = 8
-	}
+	ContentHeight = max(WindowHeight - 5, 8)
 
 	ContentWidth = WindowWidth - 4
 	HeaderSpacing = (WindowWidth - 20) / 8	

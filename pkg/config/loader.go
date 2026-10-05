@@ -11,6 +11,7 @@ type AppConfig struct {
 	Window struct {
 		Width  int `toml:"width"`
 		Height int `toml:"height"`
+		Hints bool `toml:"hints"`
 	} `toml:"window"`
 
 	Colors struct {
@@ -40,6 +41,7 @@ func LoadConfig(filePath string) error {
 	// 1. Assign current file values as fallbacks in case file elements are missing
 	cfg.Window.Width = WindowWidth
 	cfg.Window.Height = WindowHeight
+	cfg.Window.Hints = ShowHints
 	cfg.Colors.Foreground = ColorForeground
 	cfg.Colors.Background = ColorBackground
 	cfg.Colors.Border = ColorBorder
@@ -71,7 +73,10 @@ func LoadConfig(filePath string) error {
 	// Recalculate dependent grid layout variables
 	RecalculateDimensions()
 
-	// 4. Update style colors
+	// 4. Update other booleans
+	ShowHints = cfg.Window.Hints
+
+	// 5. Update style colors
 	ColorForeground = cfg.Colors.Foreground
 	ColorBackground = cfg.Colors.Background
 	ColorBorder = cfg.Colors.Border
